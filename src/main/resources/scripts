@@ -1,0 +1,12 @@
+
+
+create table if not exists company(
+                                  id bigserial not null primary key ,
+                                  name text
+);
+
+create table if not exists users(
+                                    id bigserial not null primary key ,
+                                    name text,
+                                    company_id integer references company
+);

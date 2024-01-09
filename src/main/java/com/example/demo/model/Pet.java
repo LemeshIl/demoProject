@@ -9,7 +9,7 @@ import lombok.*;
 
 @Entity
 @Data
-
+@ToString(exclude = "owner")
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +18,9 @@ public class Pet {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne( cascade = CascadeType.ALL)
-    @JoinColumn(name="owner_id")
-//    @JsonBackReference
-//    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
     private Owner owner;
-
 
 
 }

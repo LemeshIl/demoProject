@@ -12,17 +12,15 @@ import java.util.Set;
 
 @Entity
 @Data
-
+@ToString(exclude = "pets")
 public class Owner {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "name")
     private String name;
-
-//    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonManagedReference
-//    private List<Pet> pets;
+    @OneToMany(mappedBy = "owner")
+    private List<Pet> pets;
 }

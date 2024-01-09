@@ -1,37 +1,62 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.*;
+import com.example.demo.model.Company;
+import com.example.demo.model.Owner;
+import com.example.demo.model.User;
+import com.example.demo.repository.CompanyRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
 
-@RequestMapping("/user")
+@RequestMapping("/test")
 public class UserController {
-
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
 
-    @PostMapping("/create")
-    public User create(@RequestBody UserRequest userRequest) {
-        System.out.println(userRequest);
+    @GetMapping("/getUser/{id}")
+    public User getUser(@PathVariable("id") Long id) {
         User user = new User();
-        user.setUserName(userRequest.getUser().getUserName());
-        user.setFirstName(userRequest.getUser().getFirstName());
-        user.setLastName(userRequest.getUser().getLastName());
-        Company company=userRequest.getUser().getCompany();
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            user = userOpt.get();
+        }
 
-        user.setCompany(company);
+        System.out.println(user);
 
-
-        userRepository.save(user);
         return user;
+    }
+
+    @GetMapping("/getCom/{id}")
+    public Company getCom(@PathVariable("id") Long id) {
+        Company company = new Company();
+        Optional<Company> comOpt = companyRepository.findById(id);
+        if (comOpt.isPresent()) {
+            company = comOpt.get();
+        }
+
+        System.out.println(company);
+
+        return company;
+    }
+
+    @PostMapping("/saves")
+    public void save(@RequestBody User user) {
+        companyRepository.save(user.getCompany());
+        System.out.println(user.getCompany());
+        userRepository.save(user);
+        System.out.println(user);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable("id") Long id){
+        userRepository.deleteById(id);
+      //companyRepository.deleteById(id);
 
     }
+
 }
