@@ -8,6 +8,7 @@ import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -39,9 +40,9 @@ public class UserController {
             company = comOpt.get();
         }
 
-        System.out.println(company);
+       // System.out.println(company);
 
-        return company;
+        return null;
     }
 
     @PostMapping("/saves")
@@ -59,4 +60,10 @@ public class UserController {
 
     }
 
+    @GetMapping("/all")
+    public List<Company> all() {
+        List<Company>list=companyRepository.findAll();
+
+        return list;
+    }
 }
